@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerMovementScript : MonoBehaviour
 {
     public Rigidbody2D body;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
     private Vector2 inputVelocity;
     private Vector2 dashVelocity;
     public float speed;
@@ -40,6 +42,14 @@ public class PlayerMovementScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (inputVelocity.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (inputVelocity.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
         if (!isCutscene)
         {
             cooldownCount += Time.deltaTime;
@@ -52,6 +62,7 @@ public class PlayerMovementScript : MonoBehaviour
             if (isDashing)
             {
                 timeCount += Time.deltaTime;
+                animator.SetTrigger("roll");
                 if (timeCount < dashTime)
                 {
                     Vector2 velocity = body.velocity;
@@ -59,7 +70,7 @@ public class PlayerMovementScript : MonoBehaviour
                     dashVelocity.x *= (speed * dashModifier * Time.deltaTime);
                     dashVelocity.y *= (speed * dashModifier * Time.deltaTime);
                     body.AddForce((dashVelocity - (velocity * 16)) * (1/speedModifier));
-                    Debug.Log(velocity);
+                    //Debug.Log(velocity);
                 }
                 else
                 {
@@ -81,10 +92,22 @@ public class PlayerMovementScript : MonoBehaviour
                 }
                 Vector2 velocity = body.velocity;
                 inputVelocity = moveAction.ReadValue<Vector2>();
+                Vector2 animVelocity = inputVelocity;
                 inputVelocity.x *= (speed * Time.deltaTime * speedModifier);
                 inputVelocity.y *= (speed * Time.deltaTime * speedModifier);
                 body.AddForce(inputVelocity - (velocity * 16));
-                Debug.Log(velocity);
+                if (isSprinting)
+                {
+                    animator.SetTrigger("run");
+                }
+                else if (animVelocity != Vector2.zero)
+                {
+                    animator.SetTrigger("walk");
+                }
+                else
+                {
+                    animator.SetTrigger("idle");
+                }
             }
         }
         else
