@@ -6,6 +6,7 @@ using UnityEngine;
 public class ImpScript : MonoBehaviour
 {
     public PlayerHealthScript playerHealthScript;
+    public ImpFireballScript impFireballScript;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
     public Rigidbody2D body;
@@ -60,6 +61,11 @@ public class ImpScript : MonoBehaviour
             }
             attackTime += Time.deltaTime;
         }
+        else if (impFireballScript.impact)
+        {
+            body.velocity = new Vector2(0, 0);
+            animator.SetTrigger("death");
+        }
         else if (!attackBool)
         {
             fireballCooldown += Time.deltaTime;
@@ -113,8 +119,8 @@ public class ImpScript : MonoBehaviour
             {
                 attackBool = true;
                 attackTime = 0;
-                Debug.Log("Attack Time: " + attackTime);
-                Debug.Log("Fireball Cooldown: " + fireballCooldown);
+                //Debug.Log("Attack Time: " + attackTime);
+                //Debug.Log("Fireball Cooldown: " + fireballCooldown);
                 //Debug.Log("attack");
             }
         }
