@@ -87,6 +87,7 @@ public class ImpScript : MonoBehaviour
             }
             Vector2 velocity = body.velocity;
             inputVelocity = -player.transform.InverseTransformPoint(transform.position).normalized;
+            Debug.Log(-player.transform.InverseTransformPoint(transform.position));
             inputVelocity.x *= (speed * Time.deltaTime * speedModifier);
             inputVelocity.y *= (speed * Time.deltaTime * speedModifier);
             body.AddForce(inputVelocity - (velocity * 16));
@@ -134,10 +135,11 @@ public class ImpScript : MonoBehaviour
             //Debug.Log(count);
         }
     }
-    void SpawnFireball()
+    public void SpawnFireball()
     {
         fireballActive = true;
         Vector2 fireballSpawnDirection = -player.transform.InverseTransformPoint(transform.position).normalized;
+        Debug.Log(fireballSpawnDirection);
         //Debug.Log(fireballSpawnDirection);
         Vector2 fireballPosition = fireball.transform.localPosition;
         fireball.transform.localPosition = new Vector2(fireballPosition.x + (fireballSpawnDirection.x * fireballSpawnDistance), fireballPosition.y + (fireballSpawnDirection.y * fireballSpawnDistance));

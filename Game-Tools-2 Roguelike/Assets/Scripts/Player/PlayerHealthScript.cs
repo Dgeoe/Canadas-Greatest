@@ -18,4 +18,10 @@ public class PlayerHealthScript : MonoBehaviour
     {
         invincible += Time.deltaTime;
     }
+
+    public void HurtPlayer(int damage)
+    {
+        playerHealth -= damage;
+        Debug.Log("Player hurt by " + damage + ". Player health is now " + playerHealth);
+    }
 }
