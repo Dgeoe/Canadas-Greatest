@@ -11,10 +11,15 @@ public class RoomSpawner : MonoBehaviour
    private int rand;
    private bool spawned = false;
 
+   private GameObject parentGrid;
+
    void Start()
    {
     templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
     Invoke("Spawn", 0.1f);
+
+    // This returns the Grid from the current scene so the instantiated tilemap spawns correctly and is not jumbled.
+    parentGrid = GameObject.Find("Grid");
 
    }
 
@@ -26,25 +31,25 @@ public class RoomSpawner : MonoBehaviour
         {
             //will spawn a room with a BOTTOM facing door
             rand = Random.Range(0, templates.bottomRooms.Length);
-            Instantiate(templates.bottomRooms[rand], transform.position, templates.bottomRooms[rand].transform.rotation);
+            Instantiate(templates.bottomRooms[rand], transform.position, templates.bottomRooms[rand].transform.rotation, parentGrid.transform);
         }
         else if(openingDirection == 2)
         {
             //will spawn a room with a TOP facing door
             rand = Random.Range(0, templates.topRooms.Length);
-            Instantiate(templates.topRooms[rand], transform.position, templates.topRooms[rand].transform.rotation);
+            Instantiate(templates.topRooms[rand], transform.position, templates.topRooms[rand].transform.rotation, parentGrid.transform);
         }
         else if(openingDirection == 3)
         {
             //will spawn a room with a LEFT facing door
             rand = Random.Range(0, templates.leftRooms.Length);
-            Instantiate(templates.leftRooms[rand], transform.position, templates.leftRooms[rand].transform.rotation);
+            Instantiate(templates.leftRooms[rand], transform.position, templates.leftRooms[rand].transform.rotation, parentGrid.transform);
         }
         else if(openingDirection == 4)
         {
             //will spawn a room with a RIGHT facing door
             rand = Random.Range(0, templates.rightRooms.Length);
-            Instantiate(templates.rightRooms[rand], transform.position, templates.rightRooms[rand].transform.rotation);
+            Instantiate(templates.rightRooms[rand], transform.position, templates.rightRooms[rand].transform.rotation, parentGrid.transform);
         }
         else if(openingDirection == 0)
         {
@@ -58,6 +63,7 @@ public class RoomSpawner : MonoBehaviour
     }
 
    }
+   
    //guarentees rooms wont spawn on top of each other 
    void OnTriggerEnter2D(Collider2D other)
    {
