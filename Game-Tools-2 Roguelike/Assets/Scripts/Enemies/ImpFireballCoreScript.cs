@@ -13,6 +13,8 @@ public class ImpFireballCoreScript : MonoBehaviour
     public GameObject imp;
     public float fireballTime;
     public int target;
+    public AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,7 +67,14 @@ public class ImpFireballCoreScript : MonoBehaviour
     public void FireballImpactAnim()
     {
         impFireballMovementScript.enabled = false;
-        body.velocity = new Vector2(0, 0);
+        body.velocity = Vector2.zero;
         animator.SetTrigger("impact");
+
+        // Play the sound effect
+        if (audioSource != null && audioSource.clip != null)
+        {
+            audioSource.Play();
+        }
     }
+
 }

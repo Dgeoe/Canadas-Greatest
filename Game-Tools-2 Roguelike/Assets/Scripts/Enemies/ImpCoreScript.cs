@@ -17,6 +17,10 @@ public class ImpCoreScript : MonoBehaviour
     public float fireballSpawnDistance;
     public bool fireballActive;
     public bool attackBool;
+    public AudioSource audioSource;
+
+    //0= shoot, 1= death, 2=scream
+    public AudioClip[] Sounds;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +60,10 @@ public class ImpCoreScript : MonoBehaviour
             {
                 impMovementScript.enabled = true;
                 WalkAnim();
+                if (audioSource != null && audioSource.clip != null)
+                {
+                    audioSource.PlayOneShot(Sounds[3]);
+                }
             }
         }
     }
@@ -89,6 +97,10 @@ public class ImpCoreScript : MonoBehaviour
         Vector2 fireballPosition = fireball.transform.localPosition;
         fireball.transform.localPosition = new Vector2(fireballPosition.x + (fireballSpawnDirection.x * fireballSpawnDistance), fireballPosition.y + (fireballSpawnDirection.y * fireballSpawnDistance));
         fireball.SetActive(true);
+        if (audioSource != null && audioSource.clip != null)
+        {
+            audioSource.PlayOneShot(Sounds[0]);
+        }
     }
     public void DestorySelf()
     {
@@ -111,5 +123,9 @@ public class ImpCoreScript : MonoBehaviour
     {
         StopImpMovement();
         animator.SetTrigger("death");
+        if (audioSource != null && audioSource.clip != null)
+        {
+            audioSource.PlayOneShot(Sounds[1]);
+        }
     }
 }

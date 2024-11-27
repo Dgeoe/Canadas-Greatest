@@ -5,23 +5,33 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovementScript : MonoBehaviour
 {
+    [Header ("Drag and Drop")]
     public Rigidbody2D body;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
+    public AudioSource speaker;
     private Vector2 inputVelocity;
     private Vector2 dashVelocity;
+
+    [Header("Movement Variables")]
     public float speed;
     private float speedModifier;
     private float walkModifier;
     public float sprintModifier;
     private bool isSprinting;
-    public bool isCutscene;
     private float timeCount;
     private float cooldownCount;
     public float dashTime;
     public float dashModifier;
     public float dashCooldown;
     private bool isDashing;
+
+    [Header ("Sound Effects")]
+    public AudioClip[] Footsteps;
+    public AudioClip[] Dodgeroll;
+
+    [Header ("For Use Later")]
+    public bool isCutscene;
     InputAction moveAction;
     InputAction sprintAction;
     InputAction dashAction;
@@ -41,39 +51,50 @@ public class PlayerMovementScript : MonoBehaviour
     }
 
     // Update is called once per frame
+    [Header("Sound Settings")]
+public float footstepDelay = 0.5f; // Delay in seconds between footstep sounds
+private float footstepTimer = 0f;
+
     void FixedUpdate()
     {
         if (inputVelocity.x > 0)
         {
             spriteRenderer.flipX = false;
         }
-        else if (inputVelocity.x < 0)                    // Aligns sprite with direction of movement
+        else if (inputVelocity.x < 0)
         {
             spriteRenderer.flipX = true;
         }
+
         if (!isCutscene)
         {
             cooldownCount += Time.deltaTime;
-            if (dashAction.IsPressed() && cooldownCount >= dashCooldown)            // Starts Dash
+            footstepTimer += Time.deltaTime;
+
+            if (dashAction.IsPressed() && cooldownCount >= dashCooldown) // Starts Dash
             {
                 cooldownCount = 0;
                 Debug.Log("Dash");
                 isDashing = true;
+
+                // Play random dodgeroll sound
+                PlayRandomSound(Dodgeroll);
             }
-            if (isDashing)                                                    // Checks to see if dash is started
+
+            if (isDashing)
             {
                 timeCount += Time.deltaTime;
                 animator.SetTrigger("roll");
-                if (timeCount < dashTime)                                     // Iterates through movement of dash until dashTime is up
+
+                if (timeCount < dashTime)
                 {
                     Vector2 velocity = body.velocity;
                     dashVelocity = inputVelocity.normalized;
                     dashVelocity.x *= (speed * dashModifier * Time.deltaTime);
                     dashVelocity.y *= (speed * dashModifier * Time.deltaTime);
-                    body.AddForce((dashVelocity - (velocity * 16)) * (1/speedModifier));
-                    //Debug.Log(velocity);
+                    body.AddForce((dashVelocity - (velocity * 16)) * (1 / speedModifier));
                 }
-                else                                                          // Stops dash
+                else
                 {
                     timeCount = 0;
                     isDashing = false;
@@ -81,29 +102,37 @@ public class PlayerMovementScript : MonoBehaviour
             }
             else
             {
-                if (sprintAction.IsPressed())                                  // Enables sprint speed modifier
+                if (sprintAction.IsPressed()) // Enables sprint speed modifier
                 {
                     isSprinting = true;
                     speedModifier = sprintModifier;
                 }
-                else                                                           // Enables walk speed modifier
+                else // Enables walk speed modifier
                 {
                     isSprinting = false;
                     speedModifier = walkModifier;
                 }
+
                 Vector2 velocity = body.velocity;
                 inputVelocity = moveAction.ReadValue<Vector2>();
                 Vector2 animVelocity = inputVelocity;
-                inputVelocity.x *= (speed * Time.deltaTime * speedModifier);    // Movement of player
+                inputVelocity.x *= (speed * Time.deltaTime * speedModifier);
                 inputVelocity.y *= (speed * Time.deltaTime * speedModifier);
                 body.AddForce(inputVelocity - (velocity * 16));
+
+                if (animVelocity != Vector2.zero && footstepTimer >= footstepDelay) // Footstep sound effects
+                {
+                    PlayRandomSound(Footsteps, isSprinting ? 1.2f : 1.0f);
+                    footstepTimer = 0f; // Reset the timer after playing a sound
+                }
+
                 if (isSprinting)
                 {
                     animator.SetTrigger("run");
                 }
                 else if (animVelocity != Vector2.zero)
                 {
-                    animator.SetTrigger("walk");                                 // Animation check for run, walk and idle
+                    animator.SetTrigger("walk");
                 }
                 else
                 {
@@ -113,7 +142,17 @@ public class PlayerMovementScript : MonoBehaviour
         }
         else
         {
-            body.velocity = new Vector2(0, 0);                           // Stops the player if there is a cutscene playing
+            body.velocity = new Vector2(0, 0);
         }
     }
+
+    private void PlayRandomSound(AudioClip[] clips, float pitch = 1.0f)
+    {
+        if (clips.Length == 0) return;
+
+        int randomIndex = Random.Range(0, clips.Length);
+        speaker.pitch = pitch;
+        speaker.PlayOneShot(clips[randomIndex]);
+    }
+
 }
