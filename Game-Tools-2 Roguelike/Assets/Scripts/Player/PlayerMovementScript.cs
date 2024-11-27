@@ -12,6 +12,7 @@ public class PlayerMovementScript : MonoBehaviour
     public AudioSource speaker;
     private Vector2 inputVelocity;
     private Vector2 dashVelocity;
+    public GameObject CooldownSprite;
 
     [Header("Movement Variables")]
     public float speed;
@@ -77,14 +78,16 @@ private float footstepTimer = 0f;
                 Debug.Log("Dash");
                 isDashing = true;
 
-                // Play random dodgeroll sound
-                PlayRandomSound(Dodgeroll);
             }
 
             if (isDashing)
             {
                 timeCount += Time.deltaTime;
                 animator.SetTrigger("roll");
+                // Play random dodgeroll sound
+                PlayRandomSound(Dodgeroll);
+                StartCooldown();
+
 
                 if (timeCount < dashTime)
                 {
@@ -153,6 +156,31 @@ private float footstepTimer = 0f;
         int randomIndex = Random.Range(0, clips.Length);
         speaker.pitch = pitch;
         speaker.PlayOneShot(clips[randomIndex]);
+    }
+
+    public void StartCooldown()
+    {
+        StartCoroutine(CooldownRoutine());
+    }
+
+    private IEnumerator CooldownRoutine()
+    {
+        CooldownSprite.SetActive(true);
+        CooldownSprite.transform.localScale = new Vector3(1f, 0.15f, 0);
+        Vector3 originalScale = CooldownSprite.transform.localScale;
+        Vector3 targetScale = new Vector3(0f, 0.15f, 0f);
+        float duration = 1f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            CooldownSprite.transform.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        CooldownSprite.transform.localScale = targetScale;
+        CooldownSprite.SetActive(false);
     }
 
 }
