@@ -51,7 +51,7 @@ public class ImpCoreScript : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             count++;
-            Debug.Log("Count Up: " + count);
+            //Debug.Log("Count Up: " + count);
             if (count >= 1)
             {
                 impMovementScript.enabled = true;
@@ -68,7 +68,7 @@ public class ImpCoreScript : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             count--;
-            Debug.Log("Count Down: " + count);
+            //Debug.Log("Count Down: " + count);
             if (count <= 0)
             {
                 StopImpMovement();

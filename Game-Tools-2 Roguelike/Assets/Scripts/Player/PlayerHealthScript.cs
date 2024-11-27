@@ -27,28 +27,49 @@ public class PlayerHealthScript : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        playerHealth -= damage;
-        Debug.Log("Damage taken. Health is " +  playerHealth);
-        if (playerHealth == 0)
+        if (invincible >= 2)
         {
-            heart1.SetActive(false);
-            playerMovementScript.enabled = false;
-            body.velocity = new Vector2(0, 0);
-            body.bodyType = RigidbodyType2D.Static;
-            animator.SetTrigger("death");
-            restartButton.SetActive(true);
+            playerHealth -= damage;
+            invincible = 0;
+            Debug.Log("Damage taken. Health is " + playerHealth);
+            if (playerHealth == 0)
+            {
+                heart1.SetActive(false);
+                playerMovementScript.enabled = false;
+                body.velocity = new Vector2(0, 0);
+                body.bodyType = RigidbodyType2D.Static;
+                animator.SetTrigger("death");
+                restartButton.SetActive(true);
+            }
+            else if (playerHealth == 1)
+            {
+                heart2.SetActive(false);
+            }
+            else if (playerHealth == 2)
+            {
+                heart3.SetActive(false);
+            }
+            else if (playerHealth == 3)
+            {
+                heart4.SetActive(false);
+            }
         }
-        else if (playerHealth == 1)
+    }
+
+    public void Heal(int health)
+    {
+        playerHealth += health;
+        if (playerHealth == 2)
         {
-            heart2.SetActive(false);
+            heart2.SetActive(true);
         }
-        else if (playerHealth == 2)
+        if (playerHealth == 3)
         {
-            heart3.SetActive(false);
+            heart3.SetActive(true);
         }
-        else if (playerHealth == 3)
+        if (playerHealth == 4)
         {
-            heart4.SetActive(false);
+            heart4.SetActive(true);
         }
     }
 }

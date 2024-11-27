@@ -10,6 +10,7 @@ public class BullCoreScript : MonoBehaviour
     public Animator animator;
     private Vector2 inputVelocity;
     public GameObject player;
+    public GameObject damageTrigger;
     public bool startCharge;
     public bool isCharging;
     private bool isTrigger;
@@ -45,10 +46,10 @@ public class BullCoreScript : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             isTrigger = true;
-            startCharge = true;
             inputVelocity = -player.transform.InverseTransformPoint(transform.position);
             if (!isCharging)
             {
+                startCharge = true;
                 animator.SetTrigger("charge up");
                 if (Mathf.Abs(inputVelocity.x) > Mathf.Abs(inputVelocity.y))
                 {
@@ -57,10 +58,14 @@ public class BullCoreScript : MonoBehaviour
                         case (> 0):
                             spriteRenderer.flipX = true;
                             bullMovementScript.moveX = 1;
+                            damageTrigger.transform.localPosition = new Vector2(1.95f, -0.1f);
+                            damageTrigger.transform.localScale = new Vector2(1.5f, 1.5f);
                             break;
                         case (< 0):
                             spriteRenderer.flipX = false;
                             bullMovementScript.moveX = -1;
+                            damageTrigger.transform.localPosition = new Vector2(-1.95f, -0.1f);
+                            damageTrigger.transform.localScale = new Vector2(1.5f, 1.5f);
                             break;
                         default:
                             break;
@@ -72,9 +77,13 @@ public class BullCoreScript : MonoBehaviour
                     {
                         case (> 0):
                             bullMovementScript.moveY = 1;
+                            damageTrigger.transform.localPosition = new Vector2(-0.1f, 1f);
+                            damageTrigger.transform.localScale = new Vector2(2f, 1.5f);
                             break;
                         case (< 0):
                             bullMovementScript.moveY = -1;
+                            damageTrigger.transform.localPosition = new Vector2(-0.1f, -1.5f);
+                            damageTrigger.transform.localScale = new Vector2(2f, 1.5f);
                             break;
                         default:
                             break;
@@ -95,5 +104,10 @@ public class BullCoreScript : MonoBehaviour
             //bullMovementScript.inputVelocity.x = 0;
             //bullMovementScript.inputVelocity.y = 0;
         }
+    }
+
+    public void StopCharging()
+    {
+        isCharging = false;
     }
 }

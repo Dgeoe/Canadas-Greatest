@@ -33,13 +33,22 @@ public class ImpFireballCoreScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            Debug.Log("Player hit");
             playerHealthScript.TakeDamage(1);
             target = 0;
             FireballImpactAnim();
         }
-        if (collision.gameObject.tag == "Enemy" && fireballTime >= 1)
+        else if (collision.gameObject.name == "SelfKill" && fireballTime >= 1)
         {
+            Debug.Log("Self hit");
             target = 1;
+            FireballImpactAnim();
+        }
+        else if (collision.gameObject.tag == "Enemy" && fireballTime >= 1)
+        {
+            Debug.Log("Other enemy hit");
+            target = 0;
+            collision.GetComponentInParent<EnemyHealthScript>().TakeDamage(1);
             FireballImpactAnim();
         }
     }

@@ -14,9 +14,11 @@ public class BullMovementScript : MonoBehaviour
     public float speedModifier;
     public float moveX;
     public float moveY;
+    private float timer;
     // Start is called before the first frame update
     void Start()
     {
+        timer = 0;
         player = GameObject.FindWithTag("Player");
         inputVelocity = new Vector2(0, 0);
     }
@@ -24,8 +26,9 @@ public class BullMovementScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        timer += Time.deltaTime;
         Vector2 velocity = body.velocity;
-        Debug.Log(velocity);
+        //Debug.Log(velocity);
         inputVelocity = new Vector2(moveX, moveY);
         inputVelocity.x *= (speed * Time.deltaTime * speedModifier);
         inputVelocity.y *= (speed * Time.deltaTime * speedModifier);
@@ -33,10 +36,13 @@ public class BullMovementScript : MonoBehaviour
     }
     private void Update()
     {
-        if (body.velocity == Vector2.zero)
+        if (body.velocity == Vector2.zero && timer >= 0.25f)
         {
+            moveX = 0;
+            moveY = 0;
+            timer = 0;
             animator.SetTrigger("crash");
-            bullCoreScript.isCharging = false;
+            //bullCoreScript.isCharging = false;
             this.enabled = false;
         }
     }
