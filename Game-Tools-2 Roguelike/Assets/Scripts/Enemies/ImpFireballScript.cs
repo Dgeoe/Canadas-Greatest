@@ -29,6 +29,8 @@ public class ImpFireballScript : MonoBehaviour
         impTriggerCount = 0;
         fireballVelocity = -player.transform.InverseTransformPoint(transform.position);
         //Debug.Log("Starting velocity: " + body.velocity);
+        player = GameObject.FindWithTag("Player");
+        playerHealthScript = player.GetComponent<PlayerHealthScript>();
     }
 
     // Update is called once per frame
@@ -86,7 +88,7 @@ public class ImpFireballScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == imp);
+        if (collision.gameObject == imp)
         {
             //Debug.Log(collision.gameObject.name);
             impTriggerCount++;
@@ -95,7 +97,7 @@ public class ImpFireballScript : MonoBehaviour
     }
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == gameObject.transform.parent);
+        if (collision.gameObject == gameObject.transform.parent)
         {
             //Debug.Log(collision.gameObject.name);
             impTriggerCount--;

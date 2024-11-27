@@ -27,6 +27,8 @@ public class ImpScript : MonoBehaviour
         attackBool = false;
         attackTime = 0;
         fireballActive = false;
+        player = GameObject.FindWithTag("Player");
+        playerHealthScript = player.GetComponent<PlayerHealthScript>();
     }
 
     // Update is called once per frame
