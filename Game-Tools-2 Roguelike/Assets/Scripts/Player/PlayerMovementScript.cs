@@ -96,7 +96,7 @@ public class PlayerMovementScript : MonoBehaviour
                 inputVelocity.x *= (speed * Time.deltaTime * speedModifier);    // Movement of player
                 inputVelocity.y *= (speed * Time.deltaTime * speedModifier);
                 body.AddForce(inputVelocity - (velocity * 16));
-                if (isSprinting)
+                if (isSprinting && animVelocity != Vector2.zero)
                 {
                     animator.SetTrigger("run");
                 }

@@ -9,12 +9,13 @@ public class BullMovementScript : MonoBehaviour
     public Rigidbody2D body;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
-    public Vector2 inputVelocity;
     public float speed;
     public float speedModifier;
+    private float timer;
+    [HideInInspector]
+    public Vector2 inputVelocity;
     public float moveX;
     public float moveY;
-    private float timer;
     // Start is called before the first frame update
     void Start()
     {

@@ -9,12 +9,4 @@ public class EnemyHealthScript : MonoBehaviour
     {
         health -= damage;
     }
-
-    private void Update()
-    {
-        if (health <= 0)
-        {
-            GameObject.Destroy(gameObject);
-        }
-    }
 }

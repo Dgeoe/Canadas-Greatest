@@ -6,17 +6,19 @@ public class ImpCoreScript : MonoBehaviour
 {
     public ImpMovementScript impMovementScript;
     public PlayerHealthScript playerHealthScript;
+    public EnemyHealthScript enemyHealthScript;
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D body;
     public Animator animator;
     public GameObject player;
     public GameObject fireball;
+    public float fireballSpawnDistance;
+    [HideInInspector]
+    public bool fireballActive;
+    public bool attackBool;
     public int count;
     public float fireballCooldown;
     public float attackTime;
-    public float fireballSpawnDistance;
-    public bool fireballActive;
-    public bool attackBool;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,10 @@ public class ImpCoreScript : MonoBehaviour
     void Update()
     {
         fireballCooldown += Time.deltaTime;
+        if (enemyHealthScript.health <= 0)
+        {
+            DeathAnim();
+        }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {

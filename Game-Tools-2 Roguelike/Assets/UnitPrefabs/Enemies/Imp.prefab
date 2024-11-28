@@ -385,6 +385,7 @@ MonoBehaviour:
   impFireballMovementScript: {fileID: 9090533828009554584}
   impCoreScript: {fileID: 140195148718462019}
   playerHealthScript: {fileID: 0}
+  enemyHealthScript: {fileID: 6950597533020221932}
   animator: {fileID: 3343252475882582688}
   body: {fileID: 4140102988787999717}
   player: {fileID: 0}
@@ -431,6 +432,7 @@ GameObject:
   - component: {fileID: 2256403984418327368}
   - component: {fileID: 6595981003660202449}
   - component: {fileID: 140195148718462019}
+  - component: {fileID: 6950597533020221932}
   m_Layer: 0
   m_Name: Imp
   m_TagString: Untagged
@@ -765,9 +767,9 @@ MonoBehaviour:
   player: {fileID: 0}
   body: {fileID: 858952926707686532}
   spriteRenderer: {fileID: 4735436578052161433}
-  inputVelocity: {x: 0, y: 0}
   speed: 1000
   speedModifier: 2
+  inputVelocity: {x: 0, y: 0}
 --- !u!114 &140195148718462019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -782,14 +784,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impMovementScript: {fileID: 6595981003660202449}
   playerHealthScript: {fileID: 0}
+  enemyHealthScript: {fileID: 6950597533020221932}
   spriteRenderer: {fileID: 4735436578052161433}
   body: {fileID: 858952926707686532}
   animator: {fileID: 2594267585005228737}
   player: {fileID: 0}
   fireball: {fileID: 3947383329410826440}
-  count: 0
-  fireballCooldown: 0
-  attackTime: 0
   fireballSpawnDistance: 1.5
   fireballActive: 0
   attackBool: 0
+  count: 0
+  fireballCooldown: 0
+  attackTime: 0
+--- !u!114 &6950597533020221932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137309159004454113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b562d5fb4823764fb4e27782d4fb5cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1

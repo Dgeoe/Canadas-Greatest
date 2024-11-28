@@ -7,13 +7,14 @@ public class BullCoreScript : MonoBehaviour
 {
     public BullMovementScript bullMovementScript;
     public SpriteRenderer spriteRenderer;
+    public EnemyHealthScript enemyHealthScript;
+    public Rigidbody2D body;
     public Animator animator;
     private Vector2 inputVelocity;
     public GameObject player;
     public GameObject damageTrigger;
-    public bool startCharge;
-    public bool isCharging;
-    private bool isTrigger;
+    private bool startCharge;
+    private bool isCharging;
     private float chargeTimer;
     // Start is called before the first frame update
     void Start()
@@ -35,9 +36,9 @@ public class BullCoreScript : MonoBehaviour
                 chargeTimer = 0;
             }
         }
-        if (!isTrigger)
+        if (enemyHealthScript.health <= 0)
         {
-
+            DeathAnim();
         }
     }
 
@@ -45,7 +46,6 @@ public class BullCoreScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            isTrigger = true;
             inputVelocity = -player.transform.InverseTransformPoint(transform.position);
             if (!isCharging)
             {
@@ -94,7 +94,7 @@ public class BullCoreScript : MonoBehaviour
         }
         else
         {
-            isTrigger = false;
+            
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -105,9 +105,22 @@ public class BullCoreScript : MonoBehaviour
             //bullMovementScript.inputVelocity.y = 0;
         }
     }
-
+    public void DestroySelf()
+    {
+        Object.Destroy(gameObject);
+    }
+    public void StopImpMovement()
+    {
+        body.velocity = new Vector2(0, 0);
+        bullMovementScript.enabled = false;
+    }
     public void StopCharging()
     {
         isCharging = false;
+    }
+    public void DeathAnim()
+    {
+        StopImpMovement();
+        animator.SetTrigger("death");
     }
 }

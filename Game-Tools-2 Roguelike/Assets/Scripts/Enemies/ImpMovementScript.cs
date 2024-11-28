@@ -7,9 +7,10 @@ public class ImpMovementScript : MonoBehaviour
     public GameObject player;
     public Rigidbody2D body;
     public SpriteRenderer spriteRenderer;
-    public Vector2 inputVelocity;
     public float speed;
     public float speedModifier;
+    [HideInInspector]
+    public Vector2 inputVelocity;
     // Start is called before the first frame update
     void Start()
     {
